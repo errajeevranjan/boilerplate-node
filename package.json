@@ -1,0 +1,33 @@
+{
+	"name": "boilerplate-node",
+	"version": "1.0.0",
+	"description": "Boilerplate node app with jwt authentication by using jose package and mongodb as db",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon src/App.js && redis-commander"
+	},
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/errajeevranjan/boilerplate-node.git"
+	},
+	"author": "errajeevranjan",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/errajeevranjan/boilerplate-node/issues"
+	},
+	"homepage": "https://github.com/errajeevranjan/boilerplate-node#readme",
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"chalk": "^5.0.0",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.2",
+		"http-errors": "^2.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.1.4",
+		"morgan": "^1.10.0",
+		"redis": "^3.1.2",
+		"yup": "^0.32.11"
+	}
+}
