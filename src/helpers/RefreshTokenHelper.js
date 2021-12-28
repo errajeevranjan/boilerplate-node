@@ -55,14 +55,14 @@ const verifyRefreshTokenOfUser = (refresh_token) => {
 					return reject(createError.Unauthorized());
 				}
 
-				const userId = payload.aud;
-				redisClient.GET(userId, (errorWhileGettingRefreshToken, result) => {
+				const id = payload.aud;
+				redisClient.GET(id, (errorWhileGettingRefreshToken, result) => {
 					if (errorWhileGettingRefreshToken) {
 						console.log(chalk.red(errorWhileGettingRefreshToken.message)); // ? we dont want this message to be sent to user so we can console.log it instead
 						reject(createError.InternalServerError());
 						return;
 					}
-					if (refresh_token === result) return resolve(userId);
+					if (refresh_token === result) return resolve(id);
 					reject(createError.Unauthorized());
 				});
 			}
