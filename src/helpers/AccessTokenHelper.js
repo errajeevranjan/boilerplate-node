@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
 
@@ -19,11 +20,8 @@ const signAccessTokenOfUser = ({ id }) => {
 		// ? signing token
 		JWT.sign(payload, secret, options, (error, token) => {
 			if (error) {
-				reject(
-					createError.InternalServerError(
-						"Failed to sign access-token, please try again"
-					)
-				);
+				console.log(chalk.red("Failed to sign access-token, please try again"));
+				reject(createError.InternalServerError());
 			}
 			resolve(token);
 		});

@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
 import redisClient from "./RedisHelper.js";
@@ -13,27 +14,34 @@ const signRefreshTokenOfUser = ({ id }) => {
 			issuer: "bhaktipath.in",
 			audience: id,
 		};
-		JWT.sign(payload, secret, options, (error, token) => {
-			if (error) {
-				reject(
-					createError.InternalServerError(
-						"Failed to sign refresh-token, please try again"
-					)
+		JWT.sign(
+			payload,
+			secret,
+			options,
+			(errorWhileSigningRefreshToken, token) => {
+				if (errorWhileSigningRefreshToken) {
+					console.log(
+						chalk.red("Failed to sign refresh-token, please try again")
+					);
+					reject(createError.InternalServerError());
+				}
+
+				redisClient.SET(
+					id,
+					token,
+					"EX",
+					30,
+					(errorWhileSettingRefreshToken, reply) => {
+						if (errorWhileSettingRefreshToken) {
+							console.log(chalk.red("Failed to SET refresh-token in redis"));
+							reject(createError.InternalServerError());
+							return;
+						}
+						resolve(token);
+					}
 				);
 			}
-
-			redisClient.SET(id, token, "EX", 30, (error, reply) => {
-				if (error) {
-					reject(
-						createError.InternalServerError(
-							"Failed to SET refresh-token in redis"
-						)
-					);
-					return;
-				}
-				resolve(token);
-			});
-		});
+		);
 	});
 };
 
@@ -42,15 +50,15 @@ const verifyRefreshTokenOfUser = (refresh_token) => {
 		JWT.verify(
 			refresh_token,
 			process.env.REFRESH_TOKEN_SECRET,
-			(error, payload) => {
-				if (error) {
+			(errorWhileVerifyingRefreshToken, payload) => {
+				if (errorWhileVerifyingRefreshToken) {
 					return reject(createError.Unauthorized());
 				}
 
 				const userId = payload.aud;
-				redisClient.GET(userId, (error, result) => {
-					if (error) {
-						console.log(error.message);
+				redisClient.GET(userId, (errorWhileGettingRefreshToken, result) => {
+					if (errorWhileGettingRefreshToken) {
+						console.log(chalk.red(errorWhileGettingRefreshToken.message)); // ? we dont want this message to be sent to user so we can console.log it instead
 						reject(createError.InternalServerError());
 						return;
 					}
