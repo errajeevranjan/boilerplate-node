@@ -13,11 +13,12 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 InitializeMongoDb(); // Initialize MongoDB
+
 // ? handling all the routes
-app.get("/", VerifyAccessToken, async (request, response, next) => {
-	response.send("Hello authenticated user.");
+app.get("/", async (request, response, next) => {
+	response.send("Welcome to the backend of boilerplate node-js.");
 });
-app.get("/favicon.ico", (request, response) => response.status(204));
+app.get("/favicon.ico", (request, response) => response.sendStatus(204));
 
 app.use("/auth", AuthRoutes);
 
