@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import createError from "http-errors";
-import { signAccessTokenOfUser } from "../../helpers/AccessTokenHelper.js";
-import { signRefreshTokenOfUser } from "../../helpers/RefreshTokenHelper.js";
+import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
+import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
 import AuthSchema from "../../helpers/ValidationHelper.js";
 import UserModel from "../../models/UserModel.js";
 
@@ -31,8 +31,8 @@ const UserSignIn = async (request, response, next) => {
 
 		// ? if password validation succeeds then send the user access token and refresh token
 		const { id } = user;
-		const access_token = await signAccessTokenOfUser(id);
-		const refresh_token = await signRefreshTokenOfUser(id);
+		const access_token = await SignAccessToken(id);
+		const refresh_token = await SignRefreshToken(id);
 
 		response.send({ tokens: { access_token, refresh_token } });
 	} catch (error) {

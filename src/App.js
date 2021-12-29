@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 import express from "express";
 import createError from "http-errors";
 import morgan from "morgan";
-import { verifyAccessTokenOfUser } from "./helpers/AccessTokenHelper.js";
-import InitializeMongoDb from "./helpers/MongoDbHelper.js";
+import InitializeMongoDb from "./helpers/db/InitializeMongoDb.js";
+import VerifyAccessToken from "./helpers/tokens/VerifyAccessToken.js";
 import AuthRoutes from "./routes/AuthRoutes.js";
 dotenv.config(); // Load .env file
 
@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 InitializeMongoDb(); // Initialize MongoDB
 // ? handling all the routes
-app.get("/", verifyAccessTokenOfUser, async (request, response, next) => {
+app.get("/", VerifyAccessToken, async (request, response, next) => {
 	response.send("Hello authenticated user.");
 });
 app.get("/favicon.ico", (request, response) => response.status(204));

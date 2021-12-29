@@ -1,10 +1,8 @@
 import chalk from "chalk";
 import createError from "http-errors";
-import { signAccessTokenOfUser } from "../../helpers/AccessTokenHelper.js";
-import {
-	signRefreshTokenOfUser,
-	verifyRefreshTokenOfUser,
-} from "../../helpers/RefreshTokenHelper.js";
+import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
+import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
+import VerifyRefreshToken from "../../helpers/tokens/VerifyRefreshToken.js";
 
 const UserRefreshToken = async (request, response, next) => {
 	try {
@@ -13,12 +11,12 @@ const UserRefreshToken = async (request, response, next) => {
 
 		// ? if no refresh_token then throw error which will be caught by error handler
 		if (!refresh_token) throw createError.BadRequest();
-		// ? storing id that will be returned by verifyRefreshTokenOfUser upon successful verification so that we can user this id to signAccessTokenOfUser
-		const id = await verifyRefreshTokenOfUser(refresh_token);
+		// ? storing id that will be returned by VerifyRefreshToken upon successful verification so that we can user this id to SignAccessToken
+		const id = await VerifyRefreshToken(refresh_token);
 
 		//? creating new sets of access_token and refresh_token
-		const new_access_token = await signAccessTokenOfUser(id);
-		const new_refresh_token = await signRefreshTokenOfUser(id);
+		const new_access_token = await SignAccessToken(id);
+		const new_refresh_token = await SignRefreshToken(id);
 		// ? sending new access_token and refresh_token to the client
 		response.send({
 			token: {
