@@ -2,29 +2,37 @@ import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
 
-const signAccessTokenOfUser = ({ id }) => {
+const signAccessTokenOfUser = (id) => {
 	return new Promise((resolve, reject) => {
 		// ? creating payload
-		const payload = {
-			id,
-		};
+		const payload = { id };
 		// ? creating secret
 		const secret = process.env.ACCESS_TOKEN_SECRET;
 		// ? setting options
 		const options = {
-			expiresIn: "30s",
+			expiresIn: "60s",
 			issuer: "bhaktipath.in",
 			audience: id,
 		};
 
 		// ? signing token
-		JWT.sign(payload, secret, options, (error, token) => {
-			if (error) {
-				console.log(chalk.red("Failed to sign access-token, please try again"));
-				reject(createError.InternalServerError());
+		JWT.sign(
+			payload,
+			secret,
+			options,
+			(errorWhileSigningAccessToken, token) => {
+				if (errorWhileSigningAccessToken) {
+					console.log(
+						chalk.red(
+							"Failed to sign access-token, please try again",
+							errorWhileSigningAccessToken
+						)
+					);
+					reject(createError.InternalServerError());
+				}
+				resolve(token);
 			}
-			resolve(token);
-		});
+		);
 	});
 };
 
@@ -40,17 +48,23 @@ const verifyAccessTokenOfUser = (request, response, next) => {
 	const token = bearerToken[1];
 
 	// ? verifying token
-	JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, payload) => {
-		// ? if there is an error in verifying token throw error
-		if (error) {
-			const message =
-				error.name === "JsonWebTokenError" ? "Unauthorized" : error.message;
-			return next(createError.Unauthorized(message));
+	JWT.verify(
+		token,
+		process.env.ACCESS_TOKEN_SECRET,
+		(errorWhileVerifyingToken, payload) => {
+			// ? if there is an error in verifying token throw error
+			if (errorWhileVerifyingToken) {
+				const message =
+					errorWhileVerifyingToken.name === "JsonWebTokenError"
+						? "Unauthorized"
+						: errorWhileVerifyingToken.message;
+				return next(createError.Unauthorized(message));
+			}
+			// ? else attach the payload to the request
+			request.payload = payload;
+			next();
 		}
-		// ? else attach the payload to the request
-		request.payload = payload;
-		next();
-	});
+	);
 };
 
 export { signAccessTokenOfUser, verifyAccessTokenOfUser };

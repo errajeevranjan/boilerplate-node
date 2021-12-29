@@ -1,27 +1,31 @@
 import chalk from "chalk";
 import createError from "http-errors";
-import AuthSchema from "../../helpers/ValidationHelper.js";
-import UserModel from "../../models/UserModel.js";
+import { signAccessTokenOfUser } from "../../helpers/AccessTokenHelper.js";
+import {
+	signRefreshTokenOfUser,
+	verifyRefreshTokenOfUser,
+} from "../../helpers/RefreshTokenHelper.js";
 
 const UserRefreshToken = async (request, response, next) => {
 	try {
-		// ? checking if user has entered valid email/mobile and password
-		const result = await AuthSchema.validate(request.body);
-		// ? searching if the email/mobile that user has entered exists in the database
-		const { userId } = result;
-		const doesExist = await UserModel.findOne({ userId });
-		// ! if the email/mobile that user has entered exists in the database throw an error that will be catch block on line 21
-		if (doesExist) {
-			throw createError.Conflict(
-				`${userId} already exists, please log in or try again with different credentials.`
-			);
-		}
-		// ! if the email/mobile is not found in the database then figure out if user has entered an email or mobile and fill that in respective field of user model and after that respond with access_token and refresh_token
-		else {
-			const user = new UserModel({ userId, password });
-			const savedUser = await user.save();
-			response.send(savedUser);
-		}
+		// ? destructuring refresh_token from request body
+		const { refresh_token } = request.body;
+
+		// ? if no refresh_token then throw error which will be caught by error handler
+		if (!refresh_token) throw createError.BadRequest();
+		// ? storing id that will be returned by verifyRefreshTokenOfUser upon successful verification so that we can user this id to signAccessTokenOfUser
+		const id = await verifyRefreshTokenOfUser(refresh_token);
+
+		//? creating new sets of access_token and refresh_token
+		const new_access_token = await signAccessTokenOfUser(id);
+		const new_refresh_token = await signRefreshTokenOfUser(id);
+		// ? sending new access_token and refresh_token to the client
+		response.send({
+			token: {
+				access_token: new_access_token,
+				refresh_token: new_refresh_token,
+			},
+		});
 	} catch (error) {
 		console.log(chalk.red("error", error));
 		next(error);

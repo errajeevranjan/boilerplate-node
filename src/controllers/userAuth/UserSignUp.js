@@ -33,8 +33,8 @@ const UserSignUp = async (request, response, next) => {
 			const user = new UserModel({ userId, password, email, mobile });
 			const savedUser = await user.save(); // user details saved in the database
 			const { id } = savedUser;
-			const access_token = await signAccessTokenOfUser({ id }); // access token generated for the user
-			const refresh_token = await signRefreshTokenOfUser({ id }); // refresh token generated for the user
+			const access_token = await signAccessTokenOfUser(id); // access token generated for the user
+			const refresh_token = await signRefreshTokenOfUser(id); // refresh token generated for the user
 			// ! sending tokens to the client
 			response.send({ tokens: { access_token, refresh_token } });
 		}

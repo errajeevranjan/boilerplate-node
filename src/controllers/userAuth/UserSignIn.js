@@ -31,10 +31,10 @@ const UserSignIn = async (request, response, next) => {
 
 		// ? if password validation succeeds then send the user access token and refresh token
 		const { id } = user;
-		const access_token = await signAccessTokenOfUser({ id });
-		const refresh_token = await signRefreshTokenOfUser({ id });
+		const access_token = await signAccessTokenOfUser(id);
+		const refresh_token = await signRefreshTokenOfUser(id);
 
-		response.send({tokens:{ access_token, refresh_token }});
+		response.send({ tokens: { access_token, refresh_token } });
 	} catch (error) {
 		console.log(chalk.red("error", error));
 		next(error);
