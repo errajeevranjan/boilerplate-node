@@ -1,13 +1,14 @@
-import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
+import print_error from "../print_error.js";
 
-// ? middleware for checking access-token in header
-// ! if token exists and is valid user will gain access to protected routes
+// ? middleware for checking access-token and it's validity to give access to protected routes
+
 const VerifyAccessToken = (request, response, next) => {
 	// ? if there is no authorization header in the request throw error
 	if (!request.headers.authorization) return next(createError.Unauthorized());
-	// ? if there is authorization header in the request then extract token from it
+
+	// ? if there is authorization header in the request then extract token from it and remove "Bearer " from it and pass it to verify function
 	const authHeaders = request.headers.authorization;
 	const bearerToken = authHeaders.split(" ");
 	const token = bearerToken[1];
@@ -16,19 +17,14 @@ const VerifyAccessToken = (request, response, next) => {
 	JWT.verify(
 		token,
 		process.env.ACCESS_TOKEN_SECRET,
-		(errorWhileVerifyingToken, payload) => {
+		(errorVerifyingToken, payload) => {
 			// ? if there is an error in verifying token throw error
-			if (errorWhileVerifyingToken) {
-				console.log(
-					chalk.red(
-						"Failed to verify access-token : ",
-						errorWhileVerifyingToken
-					)
-				);
+			if (errorVerifyingToken) {
+				print_error("24 :: VerifyAccessToken.js", errorVerifyingToken);
 				const message =
-					errorWhileVerifyingToken.name === "JsonWebTokenError"
+					errorVerifyingToken.name === "JsonWebTokenError"
 						? "Unauthorized"
-						: errorWhileVerifyingToken.message;
+						: errorVerifyingToken.message;
 				return next(createError.Unauthorized(message));
 			}
 			// ? else attach the payload to the request

@@ -1,6 +1,8 @@
-import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
+import print_error from "../print_error.js";
+
+//? function for signing access token using user's DB id
 
 const SignAccessToken = (id) =>
 	new Promise((resolve, reject) => {
@@ -22,12 +24,7 @@ const SignAccessToken = (id) =>
 			options,
 			(errorWhileSigningAccessToken, token) => {
 				if (errorWhileSigningAccessToken) {
-					console.log(
-						chalk.red(
-							"Failed to sign access-token, please try again",
-							errorWhileSigningAccessToken
-						)
-					);
+					print_error("28 :: SignAccessToken.js", errorWhileSigningAccessToken);
 					reject(createError.InternalServerError());
 				}
 				resolve(token);

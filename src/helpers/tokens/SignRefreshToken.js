@@ -1,7 +1,9 @@
-import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
 import RedisClient from "../db/RedisClient.js";
+import print_error from "../print_error.js";
+
+//? function for signing refresh token using user's DB id
 
 const SignRefreshToken = (id) =>
 	new Promise((resolve, reject) => {
@@ -19,12 +21,8 @@ const SignRefreshToken = (id) =>
 		// ? signing token
 		JWT.sign(payload, secret, options, (errorSigningRefreshToken, token) => {
 			if (errorSigningRefreshToken) {
-				console.log(
-					chalk.red(
-						"Failed to sign refresh-token, please try again",
-						errorSigningRefreshToken
-					)
-				);
+				print_error("26 :: SignRefreshToken.js", errorSigningRefreshToken);
+
 				reject(createError.InternalServerError());
 			}
 
@@ -35,12 +33,8 @@ const SignRefreshToken = (id) =>
 				31536000, // ? 1 year in seconds
 				(errorSettingRefreshToken, reply) => {
 					if (errorSettingRefreshToken) {
-						console.log(
-							chalk.red(
-								"Failed to SET refresh-token in redis",
-								errorSettingRefreshToken
-							)
-						);
+						print_error("41 :: SignRefreshToken.js", errorSettingRefreshToken);
+
 						reject(createError.InternalServerError());
 					}
 					resolve(token);

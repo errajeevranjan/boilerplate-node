@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
+import print_error from "../print_error.js";
 import RedisClient from "../db/RedisClient.js";
 
 // ? verifying refresh token
@@ -11,12 +12,8 @@ const VerifyRefreshToken = (refresh_token) =>
 			process.env.REFRESH_TOKEN_SECRET,
 			(errorVerifyingRefreshToken, payload) => {
 				if (errorVerifyingRefreshToken) {
-					console.log(
-						chalk.red(
-							"Failed to verify refresh-token",
-							errorVerifyingRefreshToken
-						)
-					);
+					print_error("16:: VerifyRefreshToken.js", errorVerifyingRefreshToken);
+
 					reject(createError.Unauthorized());
 				}
 				// ? storing id to return it back for the purpose of signing new access and refresh tokens

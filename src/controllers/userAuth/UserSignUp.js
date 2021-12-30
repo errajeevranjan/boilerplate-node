@@ -1,5 +1,5 @@
-import chalk from "chalk";
 import createError from "http-errors";
+import print_error from "../../helpers/print_error.js";
 import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
 import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
 import AuthSchema from "../../helpers/ValidationHelper.js";
@@ -39,7 +39,7 @@ const UserSignUp = async (request, response, next) => {
 			response.send({ tokens: { access_token, refresh_token } });
 		}
 	} catch (error) {
-		console.log(chalk.red("error", error));
+		print_error("43 :: Error occurred in", error);
 		next(error);
 	}
 };

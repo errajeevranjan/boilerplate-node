@@ -4,8 +4,9 @@ import express from "express";
 import createError from "http-errors";
 import morgan from "morgan";
 import InitializeMongoDb from "./helpers/db/InitializeMongoDb.js";
-import VerifyAccessToken from "./helpers/tokens/VerifyAccessToken.js";
 import AuthRoutes from "./routes/AuthRoutes.js";
+import ProfileRoutes from "./routes/ProfileRoutes.js";
+
 dotenv.config(); // Load .env file
 
 const app = express();
@@ -21,6 +22,8 @@ app.get("/", async (request, response, next) => {
 app.get("/favicon.ico", (request, response) => response.sendStatus(204));
 
 app.use("/auth", AuthRoutes);
+
+app.use("/profile", ProfileRoutes);
 
 // ? handling errors
 app.use(async (request, response, next) => {

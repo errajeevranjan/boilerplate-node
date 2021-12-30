@@ -1,5 +1,5 @@
-import chalk from "chalk";
 import createError from "http-errors";
+import print_error from "../../helpers/print_error.js";
 import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
 import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
 import AuthSchema from "../../helpers/ValidationHelper.js";
@@ -22,7 +22,7 @@ const UserSignIn = async (request, response, next) => {
 		}
 
 		// ? if user does exist validate the password they entered
-		const isMatch = await user.isValidPassword(result.password);
+		const isMatch = await user.isPasswordValid(result.password);
 		// ? if password validation fails throw an error and ask them to try again
 		if (!isMatch)
 			throw createError.Unauthorized(
@@ -36,7 +36,7 @@ const UserSignIn = async (request, response, next) => {
 
 		response.send({ tokens: { access_token, refresh_token } });
 	} catch (error) {
-		console.log(chalk.red("error", error));
+		print_error("39 :: UserSignIn.js", error);
 		next(error);
 	}
 };

@@ -1,5 +1,5 @@
-import chalk from "chalk";
 import createError from "http-errors";
+import print_error from "../../helpers/print_error.js";
 import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
 import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
 import VerifyRefreshToken from "../../helpers/tokens/VerifyRefreshToken.js";
@@ -25,7 +25,7 @@ const UserRefreshToken = async (request, response, next) => {
 			},
 		});
 	} catch (error) {
-		console.log(chalk.red("error", error));
+		print_error("28 :: Error occurred in UserRefreshToken", error);
 		next(error);
 	}
 };

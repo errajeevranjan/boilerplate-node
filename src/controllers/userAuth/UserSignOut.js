@@ -1,5 +1,6 @@
-import chalk from "chalk";
 import createError from "http-errors";
+import RedisClient from "../../helpers/db/RedisClient.js";
+import print_error from "../../helpers/print_error.js";
 import VerifyRefreshToken from "./../../helpers/tokens/VerifyRefreshToken.js";
 
 const UserSignOut = async (request, response, next) => {
@@ -11,15 +12,15 @@ const UserSignOut = async (request, response, next) => {
 		// ? if refresh_token is valid then VerifyRefreshToken will return id
 		const id = await VerifyRefreshToken(refresh_token);
 		// ? use id to find and delete user's refresh_token from redis
-		client.DEL(id, (err, val) => {
-			if (err) {
-				console.log(chalk.red(err.message));
+		RedisClient.DEL(id, (error, value) => {
+			if (error) {
+				print_error("24 :: UserSignOut.js", error.message);
 				throw createError.InternalServerError();
 			}
-			console.log(chalk.bgGray(val));
 			response.sendStatus(204);
 		});
 	} catch (error) {
+		print_error("24 :: UserSignOut.js", error);
 		next(error);
 	}
 };

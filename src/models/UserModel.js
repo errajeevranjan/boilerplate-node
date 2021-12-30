@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
+import print_error from "../helpers/print_error.js";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
@@ -33,15 +34,17 @@ UserSchema.pre("save", async function (next) {
 		this.password = hashedPassword;
 		next();
 	} catch (error) {
+		print_error("38 :: UserModel.js", error);
 		next(error);
 	}
 });
 
 //  ? checking if the password entered by user is valid or not [called before signing in]
-UserSchema.methods.isValidPassword = async function (password) {
+UserSchema.methods.isPasswordValid = async function (password) {
 	try {
 		return await bcrypt.compare(password, this.password);
 	} catch (error) {
+		print_error("48 :: UserModel.js", error);
 		throw error;
 	}
 };
