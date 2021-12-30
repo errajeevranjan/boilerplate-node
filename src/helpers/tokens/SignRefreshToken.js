@@ -11,8 +11,8 @@ const SignRefreshToken = (id) =>
 		const secret = process.env.REFRESH_TOKEN_SECRET;
 		// ? setting options
 		const options = {
-			expiresIn: "1y",
-			issuer: "bhaktipath.in",
+			expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME,
+			issuer: process.env.TOKEN_ISSUER,
 			audience: id,
 		};
 

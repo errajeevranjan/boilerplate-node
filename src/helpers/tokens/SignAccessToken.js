@@ -10,8 +10,8 @@ const SignAccessToken = (id) =>
 		const secret = process.env.ACCESS_TOKEN_SECRET;
 		// ? setting options
 		const options = {
-			expiresIn: "60s",
-			issuer: "bhaktipath.in",
+			expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME,
+			issuer: process.env.TOKEN_ISSUER,
 			audience: id,
 		};
 
