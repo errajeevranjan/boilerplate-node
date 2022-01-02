@@ -12,6 +12,7 @@ const UserSignOut = async (request, response, next) => {
 		// ? if refresh_token is valid then VerifyRefreshToken will return id
 		const id = await VerifyRefreshToken(refresh_token);
 		// ? use id to find and delete user's refresh_token from redis
+
 		RedisClient.DEL(id, (error, value) => {
 			if (error) {
 				print_error("24 :: UserSignOut.js", error.message);

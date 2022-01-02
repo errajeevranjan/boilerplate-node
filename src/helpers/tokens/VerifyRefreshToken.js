@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import createError from "http-errors";
 import JWT from "jsonwebtoken";
-import print_error from "../print_error.js";
 import RedisClient from "../db/RedisClient.js";
+import print_error from "../print_error.js";
 
 // ? verifying refresh token
 const VerifyRefreshToken = (refresh_token) =>

@@ -1,6 +1,7 @@
 // import DecodeAccessToken from "../../helpers/tokens/DecodeAccessToken.js";
 // import UserModel from "../../models/UserModel.js";
 import print_error from "../../helpers/print_error.js";
+import UserSignOut from "../userAuth/UserSignOut.js";
 
 const DeleteUserProfile = async (request, response, next) => {
 	try {
@@ -9,6 +10,7 @@ const DeleteUserProfile = async (request, response, next) => {
   if password is valid then we will delete the user profile and clear token  from redis as well as client's local storage
   if password is invalid then we will throw error
   */
+		UserSignOut(request, response, next);
 	} catch (error) {
 		print_error("13 :: Error Occurred in DeleteUserProfile", error);
 		next(error);

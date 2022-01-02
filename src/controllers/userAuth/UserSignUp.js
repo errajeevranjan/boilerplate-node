@@ -36,7 +36,11 @@ const UserSignUp = async (request, response, next) => {
 			const access_token = await SignAccessToken(id); // access token generated for the user
 			const refresh_token = await SignRefreshToken(id); // refresh token generated for the user
 			// ! sending tokens to the client
-			response.send({ tokens: { access_token, refresh_token } });
+			response.setHeader(
+				"Set-Cookie",
+				`refresh_token=${refresh_token}; HttpOnly`
+			);
+			response.send({ access_token });
 		}
 	} catch (error) {
 		print_error("43 :: Error occurred in", error);

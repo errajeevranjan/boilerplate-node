@@ -34,7 +34,11 @@ const UserSignIn = async (request, response, next) => {
 		const access_token = await SignAccessToken(id);
 		const refresh_token = await SignRefreshToken(id);
 
-		response.send({ tokens: { access_token, refresh_token } });
+		response.setHeader(
+			"Set-Cookie",
+			`refresh_token=${refresh_token}; HttpOnly`
+		);
+		response.send({ access_token });
 	} catch (error) {
 		print_error("39 :: UserSignIn.js", error);
 		next(error);

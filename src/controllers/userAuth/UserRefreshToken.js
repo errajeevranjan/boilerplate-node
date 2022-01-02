@@ -6,8 +6,18 @@ import VerifyRefreshToken from "../../helpers/tokens/VerifyRefreshToken.js";
 
 const UserRefreshToken = async (request, response, next) => {
 	try {
-		// ? destructuring refresh_token from request body
-		const { refresh_token } = request.body;
+		// // ? destructuring refresh_token from request body
+		// console.log("req.header.cookie", request.headers.cookie);
+
+		const refresh_token = request.headers.cookie.substring(
+			request.headers.cookie.indexOf("=") + 1,
+			request.headers.cookie.lastIndexOf("")
+		);
+		// console.log(
+		// 	"🚀 ~ file: UserRefreshToken.js ~ line 13 ~ UserRefreshToken ~ extracted_refresh_token",
+		// 	extracted_refresh_token
+		// );
+		// const { refresh_token } = request.body;
 
 		// ? if no refresh_token then throw error which will be caught by error handler
 		if (!refresh_token) throw createError.BadRequest();
