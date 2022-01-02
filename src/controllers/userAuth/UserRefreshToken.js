@@ -1,4 +1,5 @@
 import createError from "http-errors";
+import ExtractRefreshToken from "../../helpers/ExtractRefreshToken.js";
 import print_error from "../../helpers/print_error.js";
 import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
 import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
@@ -9,15 +10,7 @@ const UserRefreshToken = async (request, response, next) => {
 		// // ? destructuring refresh_token from request body
 		// console.log("req.header.cookie", request.headers.cookie);
 
-		const refresh_token = request.headers.cookie.substring(
-			request.headers.cookie.indexOf("=") + 1,
-			request.headers.cookie.lastIndexOf("")
-		);
-		// console.log(
-		// 	"🚀 ~ file: UserRefreshToken.js ~ line 13 ~ UserRefreshToken ~ extracted_refresh_token",
-		// 	extracted_refresh_token
-		// );
-		// const { refresh_token } = request.body;
+		const refresh_token = ExtractRefreshToken(request.headers.cookie);
 
 		// ? if no refresh_token then throw error which will be caught by error handler
 		if (!refresh_token) throw createError.BadRequest();
@@ -27,11 +20,14 @@ const UserRefreshToken = async (request, response, next) => {
 		//? creating new sets of access_token and refresh_token
 		const new_access_token = await SignAccessToken(id);
 		const new_refresh_token = await SignRefreshToken(id);
-		// ? sending new access_token and refresh_token to the client
+		// ? sending new access_token and setting new refresh token in cookie of client
+		response.setHeader(
+			"Set-Cookie",
+			`refresh_token=${new_refresh_token}; HttpOnly`
+		);
 		response.send({
 			token: {
 				access_token: new_access_token,
-				refresh_token: new_refresh_token,
 			},
 		});
 	} catch (error) {
