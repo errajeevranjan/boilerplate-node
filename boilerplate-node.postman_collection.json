@@ -1,0 +1,255 @@
+{
+	"info": {
+		"_postman_id": "fee9ff19-ef52-4096-a93c-fef0135d06d0",
+		"name": "boilerplate-node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth-routes",
+			"item": [
+				{
+					"name": "home route ('/')",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-in route ('/sign-in')",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"testing-sign-up@gmail.com\",\r\n    \"password\":\"1234567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/sign-in",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-up route ('/sign-up')",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"1234567890\",\r\n    \"password\":\"1234567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/sign-up",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-token route ('/refresh-token')",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/refresh-token",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-out route ('/sign-out')",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refresh_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2UxNjk4ZWY2OThhYmNhYmViZTZkOCIsImlhdCI6MTY0MDg5NjE1MiwiZXhwIjoxNjcyNDUzNzUyLCJhdWQiOiI2MWNlMTY5OGVmNjk4YWJjYWJlYmU2ZDgiLCJpc3MiOiJ0b2tlbklzc3Vlck5hbWVIZXJlIn0.4fxrGbK2Ym4f70ZHcH314gn0_8nm9GAit5MR6GbBV3I\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/sign-out",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"sign-out"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile-routes",
+			"item": [
+				{
+					"name": "get user details route ('/profile'/:id)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{profile}}/:id",
+							"host": [
+								"{{profile}}"
+							],
+							"path": [
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user details route ('/profile/:id')",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"first name plus last name\",\r\n    \"gender\":\"male\",\r\n    \"address\":\"my full address\",\r\n    \"email\":\"newemail@email.com\",\r\n    \"mobile\":\"1234567889\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{profile}}61d2aefc9fd3c3097d199881",
+							"host": [
+								"{{profile}}61d2aefc9fd3c3097d199881"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user details route ('/profile/:id')",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{profile}}/:id",
+							"host": [
+								"{{profile}}"
+							],
+							"path": [
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2UxNjk4ZWY2OThhYmNhYmViZTZkOCIsImlhdCI6MTY0MTE5NzQ3OSwiZXhwIjoxNjQxMjgzODc5LCJhdWQiOiI2MWNlMTY5OGVmNjk4YWJjYWJlYmU2ZDgiLCJpc3MiOiJ0b2tlbklzc3Vlck5hbWVIZXJlIn0.OI3ye2Cl5e43B8FtX2pTQX5py76d4wy7yjjhMLRoaOE",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:6969/",
+			"type": "string"
+		},
+		{
+			"key": "profile",
+			"value": "http://localhost:6969/profile/",
+			"type": "string"
+		}
+	]
+}
