@@ -2,7 +2,7 @@ import createError from "http-errors";
 import print_error from "../../helpers/print_error.js";
 import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
 import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
-import AuthSchema from "../../helpers/ValidationHelper.js";
+import {AuthSchema} from "../../helpers/ValidationHelper.js";
 import UserModel from "../../models/UserModel.js";
 
 const UserSignUp = async (request, response, next) => {

@@ -23,4 +23,30 @@ const AuthSchema = yup.object().shape({
 		.min(6, "password must be between 6 and 12 characters long.")
 		.required("Provide valid password"),
 });
-export default AuthSchema;
+
+const ProfileSchema = yup.object().shape({
+	name: yup.string(),
+	gender: yup.string(),
+	address: yup.string(),
+	email: yup
+		.string()
+		.test("test-if-email-is-valid", "Enter Valid Email", (value) => {
+			const isValidEmail = emailRegex.test(value);
+			if (!isValidEmail) {
+				return false;
+			}
+			return true;
+		}),
+
+	mobile: yup
+		.string()
+		.test("test-if-mobile-is-valid", "Enter Valid Mobile", (value) => {
+			const isValidPhone = phoneRegex.test(value);
+			if (!isValidPhone) {
+				return false;
+			}
+			return true;
+		}),
+});
+
+export { AuthSchema, ProfileSchema };

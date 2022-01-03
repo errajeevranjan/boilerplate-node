@@ -10,6 +10,16 @@ const UserSchema = new Schema(
 			required: true,
 			unique: true,
 		},
+		name: {
+			type: String,
+		},
+		gender: {
+			type: String,
+		},
+		address: {
+			type: String,
+		},
+		/* auth related */
 		email: {
 			type: String,
 		},
