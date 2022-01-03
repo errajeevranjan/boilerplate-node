@@ -1,18 +1,15 @@
-// import DecodeAccessToken from "../../helpers/tokens/DecodeAccessToken.js";
-// import UserModel from "../../models/UserModel.js";
 import print_error from "../../helpers/print_error.js";
-import UserSignOut from "../userAuth/UserSignOut.js";
+import UserModel from "../../models/UserModel.js";
 
 const DeleteUserProfile = async (request, response, next) => {
 	try {
-		/* to delete a user profile we will ask user to provide password
-  we will then validate that password
-  if password is valid then we will delete the user profile and clear token  from redis as well as client's local storage
-  if password is invalid then we will throw error
-  */
-		UserSignOut(request, response, next);
+		const id = request.params.id; // ? id of the user whose profile is being deleted
+
+		const result = await UserModel.findByIdAndDelete(id);
+		// now next step is to delete the refresh token from the db before sending the response
+		response.send(result);
 	} catch (error) {
-		print_error("13 :: Error Occurred in DeleteUserProfile", error);
+		print_error("19 :: Error Occurred in DeleteUserProfile", error);
 		next(error);
 	}
 };

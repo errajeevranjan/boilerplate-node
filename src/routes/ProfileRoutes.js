@@ -6,10 +6,10 @@ import VerifyAccessToken from "../helpers/tokens/VerifyAccessToken.js";
 
 const router = express.Router();
 
-router.get("/", VerifyAccessToken, GetUserProfile);
+router.get("/:id", VerifyAccessToken, GetUserProfile);
 
 router.patch("/:id", VerifyAccessToken, UserSignIn);
 
-router.delete("/", VerifyAccessToken, UserSignOut);
+router.delete("/:id", VerifyAccessToken, UserSignOut);
 
 export default router;
