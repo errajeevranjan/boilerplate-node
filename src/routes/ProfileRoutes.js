@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", VerifyAccessToken, GetUserProfile);
 
-router.patch("/", VerifyAccessToken, UserSignIn);
+router.patch("/:id", VerifyAccessToken, UserSignIn);
 
 router.delete("/", VerifyAccessToken, UserSignOut);
 
