@@ -1,7 +1,36 @@
 import * as yup from "yup";
 import { emailRegex, phoneRegex } from "../utils/Regex.js";
 
-const AuthSchema = yup.object().shape({
+const SignUpSchema = yup.object().shape({
+	email: yup
+		.string()
+		.required("Please enter your email")
+		.test("testing-email-validation", "Enter Valid Email", (value) => {
+			const isValidEmail = emailRegex.test(value);
+			if (!isValidEmail) {
+				return false;
+			}
+			return true;
+		}),
+
+	mobile: yup
+		.string()
+		.required("Please enter your mobile")
+		.test("testing-mobile-validation", "Enter Valid Mobile", (value) => {
+			const isValidPhone = phoneRegex.test(value);
+			if (!isValidPhone) {
+				return false;
+			}
+			return true;
+		}),
+	password: yup
+		.string()
+		.max(12, "password must be between 6 and 12 characters long.")
+		.min(6, "password must be between 6 and 12 characters long.")
+		.required("Provide valid password"),
+});
+
+const SignInSchema = yup.object().shape({
 	userId: yup
 		.string()
 		.required("Provide valid email OR mobile")
@@ -17,6 +46,7 @@ const AuthSchema = yup.object().shape({
 				return true;
 			}
 		),
+
 	password: yup
 		.string()
 		.max(12, "password must be between 6 and 12 characters long.")
@@ -30,7 +60,7 @@ const ProfileSchema = yup.object().shape({
 	address: yup.string(),
 	email: yup
 		.string()
-		.test("test-if-email-is-valid", "Enter Valid Email", (value) => {
+		.test("testing-email-validation", "Enter Valid Email", (value) => {
 			const isValidEmail = emailRegex.test(value);
 			if (!isValidEmail) {
 				return false;
@@ -40,7 +70,7 @@ const ProfileSchema = yup.object().shape({
 
 	mobile: yup
 		.string()
-		.test("test-if-mobile-is-valid", "Enter Valid Mobile", (value) => {
+		.test("testing-mobile-validation", "Enter Valid Mobile", (value) => {
 			const isValidPhone = phoneRegex.test(value);
 			if (!isValidPhone) {
 				return false;
@@ -49,4 +79,4 @@ const ProfileSchema = yup.object().shape({
 		}),
 });
 
-export { AuthSchema, ProfileSchema };
+export { SignUpSchema, SignInSchema, ProfileSchema };
