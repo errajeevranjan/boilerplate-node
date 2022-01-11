@@ -7,8 +7,7 @@ import VerifyRefreshToken from "../../helpers/tokens/VerifyRefreshToken.js";
 
 const UserRefreshToken = async (request, response, next) => {
 	try {
-		// // ? destructuring refresh_token from request body
-		// console.log("req.header.cookie", request.headers.cookie);
+		// getting refresh_token from request body
 
 		const refresh_token = ExtractRefreshToken(request.headers.cookie);
 
