@@ -4,7 +4,6 @@ import RedisClient from "../db/RedisClient.js";
 import print_error from "../print_error.js";
 
 //? function for signing refresh token using user's DB id
-
 const SignRefreshToken = (id) =>
 	new Promise((resolve, reject) => {
 		// ? creating payload
@@ -22,7 +21,6 @@ const SignRefreshToken = (id) =>
 		JWT.sign(payload, secret, options, (errorSigningRefreshToken, token) => {
 			if (errorSigningRefreshToken) {
 				print_error("26 :: SignRefreshToken.js", errorSigningRefreshToken);
-
 				reject(createError.InternalServerError());
 			}
 

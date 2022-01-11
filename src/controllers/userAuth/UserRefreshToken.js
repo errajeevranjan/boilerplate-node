@@ -8,7 +8,6 @@ import VerifyRefreshToken from "../../helpers/tokens/VerifyRefreshToken.js";
 const UserRefreshToken = async (request, response, next) => {
 	try {
 		// getting refresh_token from request body
-
 		const refresh_token = ExtractRefreshToken(request.headers.cookie);
 
 		// ? if no refresh_token then throw error which will be caught by error handler
@@ -19,11 +18,14 @@ const UserRefreshToken = async (request, response, next) => {
 		//? creating new sets of access_token and refresh_token
 		const new_access_token = await SignAccessToken(id);
 		const new_refresh_token = await SignRefreshToken(id);
-		// ? sending new access_token and setting new refresh token in cookie of client
+
+		// ? setting new refresh token in cookie of client
 		response.setHeader(
 			"Set-Cookie",
 			`refresh_token=${new_refresh_token}; HttpOnly`
 		);
+
+		// ? sending new access_token to the client
 		response.send({
 			token: {
 				access_token: new_access_token,

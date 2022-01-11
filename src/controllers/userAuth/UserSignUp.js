@@ -7,31 +7,37 @@ import UserModel from "../../models/UserModel.js";
 
 const UserSignUp = async (request, response, next) => {
 	try {
-		// ? checking if user has entered valid email/mobile and password
+		// ? checking if user has entered valid email,mobile and password
 		const result = await SignUpSchema.validate(request.body);
 
-		// ? searching if the email/mobile that user has entered exists in the database
 		const { email, mobile, password } = result;
 
+		// ? searching if the email or mobile that user has entered exists in the database
 		const doesExist = await UserModel.findOne({ $or: [{ email }, { mobile }] });
 
-		// ? if the email/mobile that user has entered exists in the database throw an error that will be catch block on line 41
+		// ? if the email or mobile that user has entered exists in the database throw an error that will be caught by catch block on line 42
 		if (doesExist) {
 			throw createError.Conflict(
-				`${email}/${mobile} already exists, please log in.`
+				`${email} / ${mobile} already exists, please log in.`
 			);
 		}
 
+		// ? if the email or mobile that user has entered does not exist in the database then create a new user
 		const user = new UserModel({ email, mobile, password });
 		const savedUser = await user.save(); // user details saved in the database
+		// ? extracting id from user object and sign access token and refresh token
 		const { id } = savedUser;
-		const access_token = await SignAccessToken(id); // access token generated for the user
-		const refresh_token = await SignRefreshToken(id); // refresh token generated for the user
-		// ! sending tokens to the client
+		// ? sign access token and refresh token
+		const access_token = await SignAccessToken(id);
+		const refresh_token = await SignRefreshToken(id);
+
+		// ? setting new refresh token in cookie of client
 		response.setHeader(
 			"Set-Cookie",
 			`refresh_token=${refresh_token}; HttpOnly`
 		);
+
+		// ? sending access_token to the client
 		response.send({ access_token });
 	} catch (error) {
 		print_error("43 :: Error occurred in", error);

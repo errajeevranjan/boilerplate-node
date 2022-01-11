@@ -3,7 +3,6 @@ import JWT from "jsonwebtoken";
 import print_error from "../print_error.js";
 
 //? function for signing access token using user's DB id
-
 const SignAccessToken = (id) =>
 	new Promise((resolve, reject) => {
 		// ? creating payload

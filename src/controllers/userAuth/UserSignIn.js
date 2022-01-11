@@ -9,30 +9,19 @@ const UserSignIn = async (request, response, next) => {
 	try {
 		// ? checking if user has entered valid email/mobile and password
 		const result = await SignInSchema.validate(request.body);
-		const { userId } = result;
+		const { userId, password } = result;
 
 		let user;
 
-		// if (userId.includes("@")) {
-		// 	// if user has entered an email then search for the user using email
-		// 	user = await UserModel.findOne({
-		// 		email: userId,
-		// 	});
-		// } else {
-		// 	// else search for user using mobile
-		// 	user = await UserModel.findOne({
-		// 		mobile: userId,
-		// 	});
-		// }
 		user = userId.includes("@")
 			? await UserModel.findOne({
+					// if user has entered an email then search for the user using email
 					email: userId,
 			  })
 			: await UserModel.findOne({
+					// else search for user using mobile
 					mobile: userId,
 			  });
-
-		// const doesExist = await UserModel.findOne({ $or: [{ email }, { mobile }] });
 
 		// ? if user does not exist throw an error and ask them to sign up
 		if (!user) {
@@ -40,22 +29,25 @@ const UserSignIn = async (request, response, next) => {
 		}
 
 		// ? if user does exist validate the password they entered
-		const isMatch = await user.isPasswordValid(result.password);
+		const isMatch = await user.isPasswordValid(password);
 		// ? if password validation fails throw an error and ask them to try again
 		if (!isMatch)
 			throw createError.Unauthorized(
 				"Invalid login credentials, please check and try again"
 			);
 
-		// ? if password validation succeeds then send the user access token and refresh token
+		// ? if password validation succeeds then extract id from user object and sign access token and refresh token
 		const { id } = user;
 		const access_token = await SignAccessToken(id);
 		const refresh_token = await SignRefreshToken(id);
 
+		// ? setting new refresh token in cookie of client
 		response.setHeader(
 			"Set-Cookie",
 			`refresh_token=${refresh_token}; HttpOnly`
 		);
+
+		// ? sending access_token to the client
 		response.send({ access_token });
 	} catch (error) {
 		print_error("39 :: UserSignIn.js", error);

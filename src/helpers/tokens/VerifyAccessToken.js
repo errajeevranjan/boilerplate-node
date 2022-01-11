@@ -3,7 +3,6 @@ import JWT from "jsonwebtoken";
 import print_error from "../print_error.js";
 
 // ? middleware for checking access-token and it's validity to give access to protected routes
-
 const VerifyAccessToken = (request, response, next) => {
 	// ? if there is no authorization header in the request throw error
 	if (!request.headers.authorization) return next(createError.Unauthorized());

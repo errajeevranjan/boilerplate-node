@@ -13,7 +13,6 @@ const VerifyRefreshToken = (refresh_token) =>
 			(errorVerifyingRefreshToken, payload) => {
 				if (errorVerifyingRefreshToken) {
 					print_error("16:: VerifyRefreshToken.js", errorVerifyingRefreshToken);
-
 					reject(createError.Unauthorized());
 				}
 				// ? storing id to return it back for the purpose of signing new access and refresh tokens
