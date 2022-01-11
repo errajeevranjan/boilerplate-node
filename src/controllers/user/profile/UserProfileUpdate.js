@@ -1,9 +1,9 @@
-import print_error from "../../helpers/print_error.js";
-import { ProfileSchema } from "../../helpers/ValidationHelper.js";
-import UserModel from "../../models/UserModel.js";
-import DecodeAccessToken from "../../helpers/tokens/DecodeAccessToken.js";
+import print_error from "../../../helpers/print_error.js";
+import DecodeAccessToken from "../../../helpers/tokens/DecodeAccessToken.js";
+import { ProfileSchema } from "../../../helpers/ValidationHelper.js";
+import UserModel from "../../../models/user/UserModel.js";
 
-const UpdateUserProfile = async (request, response, next) => {
+const UserProfileUpdate = async (request, response, next) => {
 	try {
 		const authHeaders = request.headers.authorization;
 		// ? extracting id of the user whose profile is being updated from access_token
@@ -20,9 +20,9 @@ const UpdateUserProfile = async (request, response, next) => {
 		// send response code 204 and hit getUser profile on the client side
 		response.sendStatus(204);
 	} catch (error) {
-		print_error("17 :: Error Occurred in UpdateUserProfile", error);
+		print_error("23 :: Error Occurred in UserProfileUpdate", error);
 		next(error);
 	}
 };
 
-export default UpdateUserProfile;
+export default UserProfileUpdate;

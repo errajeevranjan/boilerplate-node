@@ -1,9 +1,9 @@
 import createError from "http-errors";
-import ExtractRefreshToken from "../../helpers/ExtractRefreshToken.js";
-import print_error from "../../helpers/print_error.js";
-import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
-import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
-import VerifyRefreshToken from "../../helpers/tokens/VerifyRefreshToken.js";
+import ExtractRefreshToken from "../../../helpers/ExtractRefreshToken.js";
+import print_error from "../../../helpers/print_error.js";
+import SignAccessToken from "../../../helpers/tokens/SignAccessToken.js";
+import SignRefreshToken from "../../../helpers/tokens/SignRefreshToken.js";
+import VerifyRefreshToken from "../../../helpers/tokens/VerifyRefreshToken.js";
 
 const UserRefreshToken = async (request, response, next) => {
 	try {

@@ -4,8 +4,8 @@ import express from "express";
 import createError from "http-errors";
 import morgan from "morgan";
 import InitializeMongoDb from "./helpers/db/InitializeMongoDb.js";
-import AuthRoutes from "./routes/AuthRoutes.js";
-import ProfileRoutes from "./routes/ProfileRoutes.js";
+import UserAuthRoutes from "./routes/user/UserAuthRoutes.js";
+import UserProfileRoutes from "./routes/user/UserProfileRoutes.js";
 
 dotenv.config(); // Load .env file
 
@@ -16,14 +16,14 @@ app.use(express.urlencoded({ extended: true }));
 InitializeMongoDb(); // Initialize MongoDB
 
 // ? handling all the routes
-app.get("/", async (request, response, next) => {
+app.get("/user", async (request, response, next) => {
 	response.send("Welcome to the backend of boilerplate node-js.");
 });
 app.get("/favicon.ico", (request, response) => response.sendStatus(204));
 
-app.use("/auth", AuthRoutes);
-
-app.use("/profile", ProfileRoutes);
+/* //* USER ROUTES BELOW */
+app.use("/user/auth", UserAuthRoutes);
+app.use("/user/profile", UserProfileRoutes);
 
 // ? handling errors
 app.use(async (request, response, next) => {

@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
-import print_error from "../helpers/print_error.js";
+import print_error from "../../helpers/print_error.js";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(

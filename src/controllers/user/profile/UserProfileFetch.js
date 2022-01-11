@@ -1,8 +1,9 @@
-import print_error from "../../helpers/print_error.js";
-import UserModel from "../../models/UserModel.js";
-import DecodeAccessToken from "../../helpers/tokens/DecodeAccessToken.js";
+import createError from "http-errors";
+import print_error from "../../../helpers/print_error.js";
+import DecodeAccessToken from "../../../helpers/tokens/DecodeAccessToken.js";
+import UserModel from "../../../models/user/UserModel.js";
 
-const GetUserProfile = async (request, response, next) => {
+const UserProfileFetch = async (request, response, next) => {
 	try {
 		const authHeaders = request.headers.authorization;
 		// ? extracting id of the user whose profile is being fetched
@@ -19,10 +20,10 @@ const GetUserProfile = async (request, response, next) => {
 		// ? sending user's profile data to client
 		response.send({ profile: user });
 	} catch (error) {
-		print_error("20 :: Error occurred in GetUserProfile ", error);
+		print_error("22 :: Error occurred in UserProfileFetch ", error);
 
 		next(error);
 	}
 };
 
-export default GetUserProfile;
+export default UserProfileFetch;
