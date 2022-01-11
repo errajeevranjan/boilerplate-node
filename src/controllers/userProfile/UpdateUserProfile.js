@@ -1,28 +1,22 @@
-import createError from "http-errors";
 import print_error from "../../helpers/print_error.js";
 import { ProfileSchema } from "../../helpers/ValidationHelper.js";
 import UserModel from "../../models/UserModel.js";
+import DecodeAccessToken from "../../helpers/tokens/DecodeAccessToken.js";
 
 const UpdateUserProfile = async (request, response, next) => {
 	try {
-		const id = request.params.id; // ? id of the user whose profile is being updated
+		const authHeaders = request.headers.authorization;
+		// ? extracting id of the user whose profile is being updated from access_token
+		const id = await DecodeAccessToken(authHeaders);
 		const updates = request.body; // ? updates to be applied to the user's profile
 		const options = { new: true }; // ? options to be used when updating the user's profile, it essentially returns the updated user's profile instead of previous one
 
-		const result = await ProfileSchema.validate(request.body);
-		const { userId } = result;
+		// check if the data entered by user is valid or not if yes execute the update else throw an error
+		await ProfileSchema.validate(request.body);
 
-		if (!userId) {
-			throw createError.NotFound(
-				`Request cannot be processed, please try again.`
-			);
-		}
+		// update the user's profile
+		await UserModel.findByIdAndUpdate(id, updates, options).exec();
 
-		const updatedProfile = await UserModel.findByIdAndUpdate(
-			id,
-			updates,
-			options
-		).exec();
 		// send response code 204 and hit getUser profile on the client side
 		response.sendStatus(204);
 	} catch (error) {
