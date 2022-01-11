@@ -1,12 +1,14 @@
 import print_error from "../../helpers/print_error.js";
 import UserModel from "../../models/UserModel.js";
+import DecodeAccessToken from "../../helpers/tokens/DecodeAccessToken.js";
 
 const GetUserProfile = async (request, response, next) => {
 	try {
-		const id = request.params.id; // ? id of the user whose profile needs to be fetched
-
+		const authHeaders = request.headers.authorization;
+		// ? extracting id of the user whose profile is being fetched
+		const id = await DecodeAccessToken(authHeaders);
 		// ? get user's profile data [excluding password] using id
-		const user = await UserModel.findById(id).select("-password");
+		const user = await UserModel.findById(id).select("-password -_id");
 
 		if (!user) {
 			throw createError.NotFound(
