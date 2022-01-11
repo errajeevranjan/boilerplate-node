@@ -23,7 +23,7 @@ const UpdateUserProfile = async (request, response, next) => {
 			updates,
 			options
 		).exec();
-		// send response code 204 and hit getuser profile on the client side
+		// send response code 204 and hit getUser profile on the client side
 		response.sendStatus(204);
 	} catch (error) {
 		print_error("17 :: Error Occurred in UpdateUserProfile", error);
