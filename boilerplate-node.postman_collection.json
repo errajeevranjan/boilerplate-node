@@ -29,7 +29,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\":\"testing-sign-up@gmail.com\",\r\n    \"password\":\"1234567\"\r\n}",
+							"raw": "{\r\n    \"userId\":\"1234567890\",\r\n    \"password\":\"1234567\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,7 +55,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\":\"1234567890\",\r\n    \"password\":\"1234567\"\r\n}",
+							"raw": "{\r\n    \"email\":\"email@email.com\",\r\n    \"mobile\":\"1234567890\",\r\n    \"password\":\"1234567\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -135,36 +135,27 @@
 			"name": "profile-routes",
 			"item": [
 				{
-					"name": "get user details route ('/profile'/:id)",
+					"name": "get user details route ('/profile')",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{profile}}/:id",
+							"raw": "{{profile}}",
 							"host": [
 								"{{profile}}"
-							],
-							"path": [
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": null
-								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "update user details route ('/profile/:id')",
+					"name": "update user details route ('/profile')",
 					"request": {
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"first name plus last name\",\r\n    \"gender\":\"male\",\r\n    \"address\":\"my full address\",\r\n    \"email\":\"newemail@email.com\",\r\n    \"mobile\":\"1234567889\"\r\n}",
+							"raw": "{\r\n    \"name\":\"updat\",\r\n    \"gender\":\"male\",\r\n    \"address\":\"updating address on 11jan 5 26\",\r\n    \"email\":\"email@email.com\",\r\n    \"mobile\":\"1234567889\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -172,16 +163,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{profile}}61d2aefc9fd3c3097d199881",
+							"raw": "{{profile}}",
 							"host": [
-								"{{profile}}61d2aefc9fd3c3097d199881"
+								"{{profile}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "delete user details route ('/profile/:id')",
+					"name": "delete user details route ('/profile')",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -190,18 +181,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{profile}}/:id",
+							"raw": "{{profile}}",
 							"host": [
 								"{{profile}}"
-							],
-							"path": [
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": null
-								}
 							]
 						}
 					},
@@ -215,7 +197,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2UxNjk4ZWY2OThhYmNhYmViZTZkOCIsImlhdCI6MTY0MTE5NzQ3OSwiZXhwIjoxNjQxMjgzODc5LCJhdWQiOiI2MWNlMTY5OGVmNjk4YWJjYWJlYmU2ZDgiLCJpc3MiOiJ0b2tlbklzc3Vlck5hbWVIZXJlIn0.OI3ye2Cl5e43B8FtX2pTQX5py76d4wy7yjjhMLRoaOE",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGQ3YzJlODIzMmFhZDUxOGU4Mjk2ZSIsImlhdCI6MTY0MTkwNTE5OSwiZXhwIjoxNjQxOTkxNTk5LCJhdWQiOiI2MWRkN2MyZTgyMzJhYWQ1MThlODI5NmUiLCJpc3MiOiJ0b2tlbklzc3Vlck5hbWVIZXJlIn0.9oK_jKzw0cYtWWwDlk-l0P0rjhquM64pZ1VjssWWTNI",
 				"type": "string"
 			}
 		]
