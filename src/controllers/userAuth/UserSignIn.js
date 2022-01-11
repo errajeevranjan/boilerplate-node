@@ -2,19 +2,37 @@ import createError from "http-errors";
 import print_error from "../../helpers/print_error.js";
 import SignAccessToken from "../../helpers/tokens/SignAccessToken.js";
 import SignRefreshToken from "../../helpers/tokens/SignRefreshToken.js";
-import { AuthSchema } from "../../helpers/ValidationHelper.js";
+import { SignInSchema } from "../../helpers/ValidationHelper.js";
 import UserModel from "../../models/UserModel.js";
 
 const UserSignIn = async (request, response, next) => {
 	try {
 		// ? checking if user has entered valid email/mobile and password
-		const result = await AuthSchema.validate(request.body);
+		const result = await SignInSchema.validate(request.body);
 		const { userId } = result;
 
-		// ? searching if the email/mobile that user has entered exists in the database
-		const user = await UserModel.findOne({
-			userId,
-		});
+		let user;
+
+		// if (userId.includes("@")) {
+		// 	// if user has entered an email then search for the user using email
+		// 	user = await UserModel.findOne({
+		// 		email: userId,
+		// 	});
+		// } else {
+		// 	// else search for user using mobile
+		// 	user = await UserModel.findOne({
+		// 		mobile: userId,
+		// 	});
+		// }
+		user = userId.includes("@")
+			? await UserModel.findOne({
+					email: userId,
+			  })
+			: await UserModel.findOne({
+					mobile: userId,
+			  });
+
+		// const doesExist = await UserModel.findOne({ $or: [{ email }, { mobile }] });
 
 		// ? if user does not exist throw an error and ask them to sign up
 		if (!user) {
